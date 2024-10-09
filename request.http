@@ -1,0 +1,25 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZ21haWwuY29tIn0.0SWDHnUZaMiZKqJSYfhMZYK08QMt7VK9MHwxO8FdJY0
+
+### CREATE CONFERENCE
+
+POST http://localhost:8000/conference
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "My first conference",
+    "seats": 100,
+    "startDate": "2024-10-13T10:00:00.000Z",
+    "endDate": "2024-10-13T11:00:00.000Z"
+}
+
+### UPDATE DATES
+
+PATCH http://localhost:8000/conference/dates/id-1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "startDate": "2024-10-20T10:00:00.000Z",
+    "endDate": "2024-10-20T11:00:00.000Z"
+}
