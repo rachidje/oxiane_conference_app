@@ -4,6 +4,7 @@ import { MongoConference } from "../../conference/adapters/mongo/mongo-conferenc
 import { MongoConferenceRepository } from "../../conference/adapters/mongo/mongo-conference-repository";
 import { BookSeat } from "../../conference/usecases/book-seat";
 import { ChangeDates } from "../../conference/usecases/change-dates";
+import { ChangeSeats } from "../../conference/usecases/change-seats";
 import { OrganizeConference } from "../../conference/usecases/organize-conference";
 import { CurrentDateGenerator } from "../../core/adapters/current-date-generator";
 import { InMemoryMailer } from "../../core/adapters/in-memory-mailer";
@@ -24,7 +25,8 @@ export interface Dependencies {
     organizeConference:     OrganizeConference;
     authenticator:          JwtAuthenticator;
     changeDates:            ChangeDates;
-    bookSeat:               BookSeat
+    changeSeats:            ChangeSeats;
+    bookSeat:               BookSeat;
 }
 
 const container : AwilixContainer<Dependencies> = createContainer<Dependencies>();
@@ -54,6 +56,8 @@ container.register({
                             .singleton(),
     bookSeat:               asFunction(({idGenerator, bookingRepository, mailer, conferenceRepository, userRepository}) => 
                                             new BookSeat(idGenerator, bookingRepository, mailer, conferenceRepository, userRepository))
+                            .singleton(),
+    changeSeats:            asFunction(({conferenceRepository, bookingRepository}) => new ChangeSeats(conferenceRepository, bookingRepository))
                             .singleton()
 });
 

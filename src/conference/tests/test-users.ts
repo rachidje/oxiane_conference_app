@@ -21,5 +21,15 @@ export const testUsers = {
         id: 'charles',
         email: 'charles@gmail.com',
         password: 'qwerty'
+    }),
+    henry: new User({
+        id: 'henry',
+        email: 'henry@gmail.com',
+        password: 'qwerty'
+    }),
+    valerie: new User({
+        id: 'valerie',
+        email: 'valerie@gmail.com',
+        password: 'qwerty'
     })
 }

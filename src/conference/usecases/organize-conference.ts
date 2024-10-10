@@ -6,6 +6,8 @@ import { IExecutable } from "../../shared/executable.interface";
 import { User } from "../../user/user.entity";
 import { Conference } from "../entities/conference.entity";
 import { ConferenceTooEarlyError } from "../exceptions/conference-too-early";
+import { ConferenceHasNotEnoughSeatsError } from "../exceptions/not-enough-seats";
+import { ConferenceHasTooManySeats } from "../exceptions/too-many-seats";
 import { IConferenceRepository } from "../ports/conference-repository.interface";
 
 type OrganizeConferenceRequest = {
@@ -45,11 +47,11 @@ export class OrganizeConference implements IExecutable<OrganizeConferenceRequest
         } 
 
         if(conference.hasTooManySeats()) {
-            throw new DomainError("The conference must have a maximum of 1000 seats")
+            throw new ConferenceHasTooManySeats()
         }
 
         if(conference.hasNotEnoughSeats()) {
-            throw new DomainError("The conference must have a minimum of 20 seats")
+            throw new ConferenceHasNotEnoughSeatsError()
         }
 
         if(conference.isTooLong()) {

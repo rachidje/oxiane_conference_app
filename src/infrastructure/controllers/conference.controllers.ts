@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "../../user/user.entity";
 import { ResolveDependencyFn } from "../config/dependecy-injection";
-import { ChangeDatesInputs, CreateConferenceInputs } from "../dto/conference.dto";
+import { ChangeDatesInputs, ChangeSeatsInputs, CreateConferenceInputs } from "../dto/conference.dto";
 import { RequestValidator } from "../utils/validate-request";
 
 
@@ -70,6 +70,29 @@ export const bookSeat = (container: ResolveDependencyFn) => {
             })
 
             return res.jsonSuccess({bookId: result.bookId}, 201)
+        } catch (error) {
+            next(error);
+        }
+    };
+}
+
+export const changeSeats = (container: ResolveDependencyFn) => {
+    return  async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { conferenceId } = req.params
+            const {errors, input} = await RequestValidator(ChangeSeatsInputs, req.body)
+
+            if(errors) {
+                return res.jsonError(errors, 400)
+            }
+
+            await container('changeSeats').execute({
+                user: req.user,
+                seats: input.seats,
+                conferenceId
+            })
+
+            return res.jsonSuccess({message: `The number of seats for conference: ${conferenceId} was updated`}, 200)
         } catch (error) {
             next(error);
         }
