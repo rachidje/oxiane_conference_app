@@ -7,7 +7,7 @@ import { e2eUsers } from './seeds/user-seeds';
 import { TestApp } from './utils/test-app';
 
 
-describe('Feature: Change conference seats', () => {
+describe('Feature: Cancel a conference', () => {
     let testApp: TestApp
     let app: Application
     let conferenceRepository: IConferenceRepository
@@ -27,23 +27,19 @@ describe('Feature: Change conference seats', () => {
         await testApp.tearDown()
     })
 
+
     it('should organize a conference', async () => {
 
         const conferenceId = e2eConferences.conference1.entity.props.id
-        const seats = 150
 
         const result = await request(app)
-                        .patch(`/conference/seats/${conferenceId}`)
+                        .delete(`/conference/${conferenceId}`)
                         .set('Authorization', e2eUsers.johnDoe.createJwtToken())
-                        .send({
-                            seats
-                        });
         
         expect(result.status).toBe(200);
 
         const fetchedConference = await conferenceRepository.findById(e2eConferences.conference1.entity.props.id)
-        expect(fetchedConference).toBeDefined()
-        expect(fetchedConference!.props.seats).toEqual(seats)
+        expect(fetchedConference).toBeNull()
 
     });
 });

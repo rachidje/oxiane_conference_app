@@ -3,6 +3,7 @@ import { InMemoryBookingRepository } from "../../conference/adapters/in-memory-b
 import { MongoConference } from "../../conference/adapters/mongo/mongo-conference";
 import { MongoConferenceRepository } from "../../conference/adapters/mongo/mongo-conference-repository";
 import { BookSeat } from "../../conference/usecases/book-seat";
+import { CancelConference } from "../../conference/usecases/cancel-conference";
 import { ChangeDates } from "../../conference/usecases/change-dates";
 import { ChangeSeats } from "../../conference/usecases/change-seats";
 import { OrganizeConference } from "../../conference/usecases/organize-conference";
@@ -27,6 +28,7 @@ export interface Dependencies {
     changeDates:            ChangeDates;
     changeSeats:            ChangeSeats;
     bookSeat:               BookSeat;
+    cancelConference:       CancelConference;
 }
 
 const container : AwilixContainer<Dependencies> = createContainer<Dependencies>();
@@ -57,7 +59,11 @@ container.register({
     bookSeat:               asFunction(({idGenerator, bookingRepository, mailer, conferenceRepository, userRepository}) => 
                                             new BookSeat(idGenerator, bookingRepository, mailer, conferenceRepository, userRepository))
                             .singleton(),
-    changeSeats:            asFunction(({conferenceRepository, bookingRepository}) => new ChangeSeats(conferenceRepository, bookingRepository))
+    changeSeats:            asFunction(({conferenceRepository, bookingRepository}) => 
+                                            new ChangeSeats(conferenceRepository, bookingRepository))
+                            .singleton(),
+    cancelConference:       asFunction(({conferenceRepository,mailer, bookingRepository, userRepository}) => 
+                                            new CancelConference(conferenceRepository, mailer, bookingRepository, userRepository))
                             .singleton()
 });
 

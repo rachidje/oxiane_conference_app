@@ -98,3 +98,20 @@ export const changeSeats = (container: ResolveDependencyFn) => {
         }
     };
 }
+
+export const cancelConference = (container: ResolveDependencyFn) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {conferenceId} = req.params
+
+            await container('cancelConference').execute({
+                conferenceId,
+                user: req.user
+            })
+
+            return res.jsonSuccess({message: `The conference: ${conferenceId} was correctly deleted`}, 200)
+        } catch (error) {
+            next(error);
+        }
+    };
+}

@@ -16,4 +16,9 @@ export class InMemoryConferenceRepository implements IConferenceRepository {
         const index = this.database.findIndex(conf => conf.props.id === conference.props.id)
         this.database[index] = conference
     }
+
+    async delete(conference: Conference): Promise<void> {
+        const index = this.database.findIndex(conf => conf.props.id === conference.props.id)
+        this.database.splice(index, 1)
+    }
 }

@@ -1,4 +1,5 @@
 import { differenceInDays, differenceInHours } from "date-fns";
+import { User } from "../../user/user.entity";
 
 type ConferenceProps = {
     id: string;
@@ -14,6 +15,10 @@ export class Conference {
     constructor(
         public props: ConferenceProps,
     ) {}
+
+    isTheOrganizer(user: User) {
+        return this.props.organizerId === user.props.id
+    }
 
     isTooEarly(now: Date) {
         return differenceInDays(this.props.startDate, now) < 3

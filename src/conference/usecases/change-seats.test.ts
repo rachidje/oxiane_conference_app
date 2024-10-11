@@ -68,7 +68,7 @@ describe('Feature: Change seats', () => {
         })
     })
 
-    describe('Scenario: The conference has not enough', () => {
+    describe('Scenario: The conference has not enough seats', () => {
         const payload = {
             conferenceId: testConference.conference1.props.id,
             seats: 19,
@@ -80,7 +80,7 @@ describe('Feature: Change seats', () => {
     })
 
     
-    describe('Scenario: The conference has not enough', () => {
+    describe('Scenario: The conference has too many seats', () => {
         const payload = {
             conferenceId: testConference.conference1.props.id,
             seats: 1001,

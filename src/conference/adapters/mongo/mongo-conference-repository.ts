@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
-import { MongoConference } from "./mongo-conference";
 import { Conference } from "../../entities/conference.entity";
 import { IConferenceRepository } from "../../ports/conference-repository.interface";
+import { MongoConference } from "./mongo-conference";
 
 class ConferenceMapper {
     toCore(conferenceDoc: MongoConference.ConferenceDocument) : Conference {
@@ -52,5 +52,9 @@ export class MongoConferenceRepository implements IConferenceRepository {
     async update(conference: Conference): Promise<void> {
         const conferenceDoc = this.mapper.toPersistence(conference)
         await this.model.updateOne({_id: conference.props.id}, conferenceDoc)
+    }
+
+    async delete(conference: Conference): Promise<void> {
+        await this.model.deleteOne({_id: conference.props.id})
     }
 }
