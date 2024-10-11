@@ -63,7 +63,7 @@ export const bookSeat = (container: ResolveDependencyFn) => {
     return  async (req: Request, res: Response, next: NextFunction) => {
         try {
             const { conferenceId } = req.params
-
+            
             const result = await container('bookSeat').execute({
                 user: req.user,
                 conferenceId
@@ -110,6 +110,23 @@ export const cancelConference = (container: ResolveDependencyFn) => {
             })
 
             return res.jsonSuccess({message: `The conference: ${conferenceId} was correctly deleted`}, 200)
+        } catch (error) {
+            next(error);
+        }
+    };
+}
+
+export const cancelBooking = (container: ResolveDependencyFn) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const {conferenceId} = req.params
+
+            await container('cancelBooking').execute({
+                conferenceId,
+                user: req.user
+            })
+
+            return res.jsonSuccess({message: `The booking to the conference: ${conferenceId} was correctly cancelled`}, 200)
         } catch (error) {
             next(error);
         }

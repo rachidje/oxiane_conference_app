@@ -29,7 +29,7 @@ describe('Feature: Change conference dates', () => {
     })
 
 
-    it('should organize a conference', async () => {
+    it('should the dates of the conference', async () => {
 
         const conferenceId = e2eConferences.conference1.entity.props.id
 

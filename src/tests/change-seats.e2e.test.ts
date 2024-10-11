@@ -27,7 +27,7 @@ describe('Feature: Change conference seats', () => {
         await testApp.tearDown()
     })
 
-    it('should organize a conference', async () => {
+    it('should change the number of seats of the conference', async () => {
 
         const conferenceId = e2eConferences.conference1.entity.props.id
         const seats = 150

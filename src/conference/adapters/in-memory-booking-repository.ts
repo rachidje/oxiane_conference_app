@@ -20,4 +20,9 @@ export class InMemoryBookingRepository implements IBookingRepository {
     async findOne(userId: string, conferenceId: string): Promise<Booking | null> {
         return this.database.find(booking => booking.props.userId === userId && booking.props.conferenceId === conferenceId) ?? null
     }
+
+    async delete(booking: Booking): Promise<void> {
+        const index = this.database.findIndex(b => b.props.id === booking.props.id)
+        this.database.splice(index, 1)
+    }
 }

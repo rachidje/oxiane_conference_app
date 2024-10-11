@@ -14,6 +14,7 @@ import { RandomIDGenerator } from "../../core/adapters/random-id-generator";
 import { MongoUser } from "../../user/adapters/mongo/mongo-user";
 import { MongoUserRepository } from "../../user/adapters/mongo/mongo-user-repository";
 import { JwtAuthenticator } from "../../user/services/jwt-authenticator";
+import { CancelBooking } from "../../conference/usecases/cancel-booking";
 
 export interface Dependencies {
     conferenceRepository:   MongoConferenceRepository;
@@ -29,6 +30,7 @@ export interface Dependencies {
     changeSeats:            ChangeSeats;
     bookSeat:               BookSeat;
     cancelConference:       CancelConference;
+    cancelBooking:          CancelBooking;
 }
 
 const container : AwilixContainer<Dependencies> = createContainer<Dependencies>();
@@ -64,6 +66,9 @@ container.register({
                             .singleton(),
     cancelConference:       asFunction(({conferenceRepository,mailer, bookingRepository, userRepository}) => 
                                             new CancelConference(conferenceRepository, mailer, bookingRepository, userRepository))
+                            .singleton(),
+    cancelBooking:          asFunction(({bookingRepository, mailer,  userRepository, conferenceRepository}) => 
+                                            new CancelBooking(bookingRepository, mailer, userRepository, conferenceRepository))
                             .singleton()
 });
 

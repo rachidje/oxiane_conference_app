@@ -13,6 +13,7 @@ describe('Feature: Organizing Conference', () => {
         testApp = new TestApp()
         await testApp.setup()
         await testApp.loadAllFixtures([
+            e2eUsers.alice,
             e2eUsers.johnDoe,
             e2eConferences.conference1
         ])
@@ -24,11 +25,12 @@ describe('Feature: Organizing Conference', () => {
         await testApp.tearDown()
     })
 
-    it('should organize a conference', async () => {
+    it('should book a seat', async () => {
         const conferenceId = e2eConferences.conference1.entity.props.id
         const result = await request(app)
                             .post(`/conference/book/${conferenceId}`)
-                            .set('Authorization', e2eUsers.johnDoe.createJwtToken())
+                            .set('Authorization', e2eUsers.alice.createJwtToken())
+
         
         expect(result.status).toBe(201);
         expect(result.body.data).toEqual({ bookId: expect.any(String) });

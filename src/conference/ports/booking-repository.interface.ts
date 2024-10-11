@@ -6,4 +6,5 @@ export interface IBookingRepository {
     findByConferenceId(id: string): Promise<Booking[]>
     findById(id: string): Promise<Booking | null>
     findOne(userId: string, conferenceId: string): Promise<Booking | null>
+    delete(booking: Booking): Promise<void>
 }

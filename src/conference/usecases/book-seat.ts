@@ -33,7 +33,7 @@ export class BookSeat implements IExecutable<BookSeatRequest, BookSeatResponse> 
         const conference = await this.conferenceRepository.findById(conferenceId)
 
         if(!conference) throw new ConferenceNotFoundError()
-
+        
         await this.assertUserIsNotAlreadyBooked(user, conference)
         await this.assertSeatsAreAvailable(conference)
 
