@@ -6,12 +6,12 @@ import { isAuthenticated } from "../middlewares/authenticator.middleware";
 const router = Router()
 
 router.use(isAuthenticated)
-router.post('/conference', createConference(container))
-router.patch('/conference/dates/:conferenceId', changeDates(container))
-router.patch('/conference/seats/:conferenceId', changeSeats(container))
-router.post('/conference/book/:conferenceId', bookSeat(container))
+router.post('', createConference(container))
+router.patch('/dates/:conferenceId', changeDates(container))
+router.patch('/seats/:conferenceId', changeSeats(container))
+router.post('/book/:conferenceId', bookSeat(container))
 
-router.delete('/conference/:conferenceId', cancelConference(container))
-router.delete('/conference/book/:conferenceId', cancelBooking(container))
+router.delete('/:conferenceId', cancelConference(container))
+router.delete('/book/:conferenceId', cancelBooking(container))
 
 export default router;

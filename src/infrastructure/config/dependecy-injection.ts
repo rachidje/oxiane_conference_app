@@ -1,8 +1,10 @@
 import { asClass, asFunction, AwilixContainer, createContainer } from "awilix";
-import { InMemoryBookingRepository } from "../../conference/adapters/in-memory-booking-repository";
+import { MongoBooking } from "../../conference/adapters/mongo/mongo-booking";
+import { MongoBookingRepository } from "../../conference/adapters/mongo/mongo-booking-repository";
 import { MongoConference } from "../../conference/adapters/mongo/mongo-conference";
 import { MongoConferenceRepository } from "../../conference/adapters/mongo/mongo-conference-repository";
 import { BookSeat } from "../../conference/usecases/book-seat";
+import { CancelBooking } from "../../conference/usecases/cancel-booking";
 import { CancelConference } from "../../conference/usecases/cancel-conference";
 import { ChangeDates } from "../../conference/usecases/change-dates";
 import { ChangeSeats } from "../../conference/usecases/change-seats";
@@ -14,9 +16,7 @@ import { RandomIDGenerator } from "../../core/adapters/random-id-generator";
 import { MongoUser } from "../../user/adapters/mongo/mongo-user";
 import { MongoUserRepository } from "../../user/adapters/mongo/mongo-user-repository";
 import { JwtAuthenticator } from "../../user/services/jwt-authenticator";
-import { CancelBooking } from "../../conference/usecases/cancel-booking";
-import { MongoBookingRepository } from "../../conference/adapters/mongo/mongo-booking-repository";
-import { MongoBooking } from "../../conference/adapters/mongo/mongo-booking";
+import { RegisterUser } from "../../user/usecases/register-user";
 
 export interface Dependencies {
     conferenceRepository:   MongoConferenceRepository;
@@ -33,6 +33,7 @@ export interface Dependencies {
     bookSeat:               BookSeat;
     cancelConference:       CancelConference;
     cancelBooking:          CancelBooking;
+    registerUser:           RegisterUser;
 }
 
 const container : AwilixContainer<Dependencies> = createContainer<Dependencies>();
@@ -71,7 +72,11 @@ container.register({
                             .singleton(),
     cancelBooking:          asFunction(({bookingRepository, mailer,  userRepository, conferenceRepository}) => 
                                             new CancelBooking(bookingRepository, mailer, userRepository, conferenceRepository))
+                            .singleton(),
+    registerUser:           asFunction(({idGenerator, userRepository, mailer}) => 
+                                            new RegisterUser(idGenerator, userRepository, mailer))
                             .singleton()
+
 });
 
 export type ResolveDependencyFn = <K extends keyof Dependencies>(key: K) => Dependencies[K]

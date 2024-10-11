@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import resolveDependency, { ResolveDependencyFn } from '../../infrastructure/config/dependecy-injection'
 import { errorHandlerMiddleware } from '../../infrastructure/middlewares/error-handler.middleware'
 import { jsonResponseMiddleware } from '../../infrastructure/middlewares/json-response.middleware'
-import conferenceRoutes from '../../infrastructure/routes/conference.routes'
+import routes from '../../infrastructure/routes'
 import { IFixture } from './fixture.interface'
 
 export class TestApp {
@@ -23,7 +23,7 @@ export class TestApp {
         this.app.use(express.json())
         this.app.use(express.urlencoded({extended: true}))
         this.app.use(jsonResponseMiddleware)
-        this.app.use(conferenceRoutes)
+        this.app.use(routes)
         this.app.use(errorHandlerMiddleware)
     }
 

@@ -3,7 +3,7 @@ import express from 'express'
 import mongoose from 'mongoose'
 import { errorHandlerMiddleware } from './middlewares/error-handler.middleware'
 import { jsonResponseMiddleware } from './middlewares/json-response.middleware'
-import conferenceRoutes from './routes/conference.routes'
+import routes from './routes'
 dotenv.config()
 
 if(!process.env.DATABASE_URL) {
@@ -20,7 +20,7 @@ app.use(express.urlencoded({extended: true}))
 
 app.use(jsonResponseMiddleware)
 
-app.use(conferenceRoutes)
+app.use(routes)
 
 app.use(errorHandlerMiddleware)
 
