@@ -15,13 +15,15 @@ import { MongoUser } from "../../user/adapters/mongo/mongo-user";
 import { MongoUserRepository } from "../../user/adapters/mongo/mongo-user-repository";
 import { JwtAuthenticator } from "../../user/services/jwt-authenticator";
 import { CancelBooking } from "../../conference/usecases/cancel-booking";
+import { MongoBookingRepository } from "../../conference/adapters/mongo/mongo-booking-repository";
+import { MongoBooking } from "../../conference/adapters/mongo/mongo-booking";
 
 export interface Dependencies {
     conferenceRepository:   MongoConferenceRepository;
     idGenerator:            RandomIDGenerator;
     dateGenerator:          CurrentDateGenerator;
     mailer:                 InMemoryMailer;
-    bookingRepository:      InMemoryBookingRepository;
+    bookingRepository:      MongoBookingRepository;
     userRepository:         MongoUserRepository;
     messageBroker:          RabbitMQPublisher;
     organizeConference:     OrganizeConference;
@@ -42,7 +44,7 @@ container.register({
                             .singleton(),
     mailer:                 asClass(InMemoryMailer)
                             .singleton(),
-    bookingRepository:      asClass(InMemoryBookingRepository)
+    bookingRepository:      asFunction(() => new MongoBookingRepository(MongoBooking.BookingModel))
                             .singleton(),
     conferenceRepository:   asFunction(() => new MongoConferenceRepository(MongoConference.ConferenceModel))
                             .singleton(),
